@@ -1,0 +1,6 @@
+c:\users\максим\documents\visual studio 2015\Projects\Codewars Parser\Codewars Parser\bin\Debug\Codewars Parser.exe.config
+C:\Users\Максим\documents\visual studio 2015\Projects\Codewars Parser\Codewars Parser\bin\Debug\Codewars Parser.exe
+C:\Users\Максим\documents\visual studio 2015\Projects\Codewars Parser\Codewars Parser\bin\Debug\Codewars Parser.pdb
+C:\Users\Максим\documents\visual studio 2015\Projects\Codewars Parser\Codewars Parser\obj\Debug\Codewars Parser.csprojResolveAssemblyReference.cache
+C:\Users\Максим\documents\visual studio 2015\Projects\Codewars Parser\Codewars Parser\obj\Debug\Codewars Parser.exe
+C:\Users\Максим\documents\visual studio 2015\Projects\Codewars Parser\Codewars Parser\obj\Debug\Codewars Parser.pdb
