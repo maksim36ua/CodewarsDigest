@@ -70,6 +70,28 @@ namespace CodewarsDigest_v1._2
                 user.PointsForThisWeek = user.CurrentPoints - user.LastWeekPoints;
         }
 
+        public static void PrintInTXT(List<UserInfo> userList, int thisWeekNumber)
+        {
+            using (FileStream file = new FileStream(@"Data\WeeklyRating\totalRating" + thisWeekNumber + ".txt", FileMode.Append))
+            {
+                using (StreamWriter stream = new StreamWriter(file))
+                {
+                    foreach (var user in userList)
+                        stream.WriteLine(user.Name + " " + user.CurrentPoints);
+                }
+            }
+
+            using (FileStream file = new FileStream(@"Data\ForSite.txt", FileMode.Open))
+            {
+                using (StreamWriter stream = new StreamWriter(file))
+                {
+                    for (int i = 0; i < userList.Count; i++)
+                        stream.WriteLine($"{i+1}.  {userList[i].Name}  ({userList[i].CurrentPoints}, { userList[i].PointsForThisWeek})");
+
+                }
+            }
+        }
+
         public static List<string[]> ExtractVkLinksFromTXT()
         {
             using (FileStream fileNicks = new FileStream(@"Data\nicknames.txt", FileMode.Open))
@@ -99,32 +121,39 @@ namespace CodewarsDigest_v1._2
             }
         }
 
-        public static void PrintCurrentPointsToTXT(List<UserInfo> userList, int thisWeekNumber)
+        public static List<UserInfo> SortActiveUsersOfThisWeek(List<UserInfo> userList)
         {
-            using (FileStream file = new FileStream(@"Data\WeeklyRating\totalRating" + thisWeekNumber + ".txt", FileMode.Append))
-            {
-                using (StreamWriter stream = new StreamWriter(file))
-                {
-                    foreach (var user in userList)
-                        stream.WriteLine(user.Name + " " + user.CurrentPoints);
-                }
-            }
+            userList.RemoveAll(user => user.PointsForThisWeek == 0);            
+            List<UserInfo> sortedList = userList.OrderByDescending(user => user.PointsForThisWeek).ToList();
+            sortedList.ForEach(user => Console.WriteLine(user.Name + " " + user.PointsForThisWeek));
+            return sortedList;
         }
 
-        public static void PrintWeekRatingInHTML()
+        public static void PrintInConsoleAndHTML(List<UserInfo> userList)
         {
-
-        } // TODO
-
-        public static void PrintTotalRatingInConsole()
-        {
-            // Sort users by result
-
             List<string[]> listOfNicknamesAndVKLinks = ExtractVkLinksFromTXT();
-            
+            List<UserInfo> activeUserList = SortActiveUsersOfThisWeek(userList);
+
+            //foreach (var user in activeUserList)
+            for(int i = 0; i < activeUserList.Count; i++)
+                foreach (var nick in listOfNicknamesAndVKLinks)
+                {
+                    if (nick.Length == 2) // If username consists of 1 word
+                    {
+                        if (nick[0] == activeUserList[i].Name)
+                            Console.WriteLine($"{i + 1}.  @{nick[1]}({activeUserList[i].Name})  ({activeUserList[i].PointsForThisWeek})");
+                    }
+
+                    if (nick.Length == 3) // If username consists of 2 words
+                    {
+                        if ((nick[0] + " " + nick[1]) == activeUserList[i].Name) // (i+1) + ".   @" + nick[1] + ()
+                            Console.WriteLine($"{i + 1}.  @{nick[1]}({activeUserList[i].Name})  ({activeUserList[i].PointsForThisWeek})");
+                    }
+                }
 
 
-        } // TODO
+        } // TODO: HTML OUTPUT, users without links printed incorrectly
+        
 
         static void Main(string[] args)
         {
@@ -144,8 +173,8 @@ namespace CodewarsDigest_v1._2
             ExtractUsersFromHTML(userList);
             ExtractUsersFromTXT(userList, thisWeekNumber - 1);
             GenerateWeekRating(userList);
-            PrintCurrentPointsToTXT(userList, thisWeekNumber);
-            PrintTotalRatingInConsole();
+            PrintInTXT(userList, thisWeekNumber);
+            PrintInConsoleAndHTML(userList);
 
             //foreach (var user in userList)
             //    Console.WriteLine(user.Name + " " + user.LastWeekPoints 
