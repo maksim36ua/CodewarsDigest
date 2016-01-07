@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodewarsDigest_v1._2
+namespace UserInfoClass
 {
     class UserInfo
     {
