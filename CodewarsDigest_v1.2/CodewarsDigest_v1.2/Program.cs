@@ -48,7 +48,7 @@ namespace CodewarsDigest_v1._2
 
            //tempList.ForEach(user => Console.WriteLine($"{user.Name} {user.CurrentPoints}"));
 
-        }
+        } // TODO: pack in using()
 
         public static void ExtractUsersFromTXT(List<UserInfo> userList, int lastWeekNumber)
         {
@@ -148,7 +148,27 @@ namespace CodewarsDigest_v1._2
 
         public static void PrintInHTML(List<UserInfo> activeUserList) // TODO
         {
+            HtmlDocument page = new HtmlDocument();
+            page.Load(@"Data\ThisWeekRating.html");
 
+            List<HtmlNode> root = page.DocumentNode.Descendants() // Extracting info of other users
+               .Where(n => (n.Name == "div" && n.Attributes["class"] != null && n.Attributes["class"].Value.Contains("leaderboard pan"))).ToList();
+
+            var trTag = root[0].Descendants("tr").ToList(); // first and main "div" with "leaderboard pan" class
+
+            foreach (var userBlock in trTag)
+            {
+                var aTag = userBlock.Descendants("a").ToList(); // adding nickname
+                aTag[0].InnerText.Replace("vladkha", "");
+                var tdTag = userBlock.Descendants("td").ToList();
+
+            }
+
+            //foreach (var userBlock in trTag)
+            //{
+            //    var aTag = userBlock.Te
+            //    var tdTag = userBlock.Descendants("td").ToList();
+            //}
         }
 
         public static void PrintInConsole(List<UserInfo> activeUserList, List<string[]> listOfNicknamesAndVKLinks)
