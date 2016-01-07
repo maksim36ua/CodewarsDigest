@@ -13,14 +13,13 @@ namespace CodewarsDigest_v1._2
         public static void ExtractUsersFromHTML(List<UserInfo> userList)
         {     
             HtmlDocument page = new HtmlDocument();
-            //page.Load(@"C:\Users\maksi\Documents\GitHub\CodewarsDigest\CodewarsDigest_v1.2\CodewarsDigest_v1.2\Data\1.html");
-            page.Load(@"Data\1.html");
-            List<HtmlNode> root = page.DocumentNode.Descendants()
+            page.Load(@"Data\1.html");                     
+
+            List<HtmlNode> root = page.DocumentNode.Descendants() // Extracting info of other users
                 .Where(n => (n.Name == "div" && n.Attributes["class"] != null && n.Attributes["class"].Value.Contains("leaderboard pan"))).ToList();
 
             var trTag = root[0].Descendants("tr").ToList(); // first and main "div" with "leaderboard pan" class
           
-
             foreach (var userBlock in trTag)
             {
                 var aTag = userBlock.Descendants("a").ToList(); // adding nickname
@@ -31,7 +30,24 @@ namespace CodewarsDigest_v1._2
 
                 userList.Add(user);
             }
-            
+
+            UserInfo myUserInfo = new UserInfo("maksim36ua"); // My user object
+
+            List<HtmlNode> myInfo = page.DocumentNode.Descendants() // Extract my info
+                .Where(n => (n.Name == "div" && n.Attributes["class"] != null && n.Attributes["class"].Value.Contains("honor"))).ToList();
+
+            var spanTag = myInfo[0].Descendants().ToList(); // Extracting my points
+            myUserInfo.CurrentPoints = int.Parse(spanTag[2].InnerText);
+
+            userList.Add(myUserInfo);
+
+            var tempList = userList.OrderByDescending(user => user.CurrentPoints).ToList(); // Sorting total rating 
+
+            userList.Clear(); // Substituting old list with sorted
+            userList.AddRange(tempList);
+
+           //tempList.ForEach(user => Console.WriteLine($"{user.Name} {user.CurrentPoints}"));
+
         }
 
         public static void ExtractUsersFromTXT(List<UserInfo> userList, int lastWeekNumber)
@@ -99,6 +115,7 @@ namespace CodewarsDigest_v1._2
                 using (StreamReader streamNicks = new StreamReader(fileNicks))
                 {
                     List<string[]> listOfNicknames = new List<string[]>();
+
                     while (!streamNicks.EndOfStream) // Separating nickname file to user field
                     {
                         string[] nickAndLink = streamNicks.ReadLine()
@@ -108,11 +125,11 @@ namespace CodewarsDigest_v1._2
 
                     foreach (var nickAndLink in listOfNicknames) // remove "vk.com"
                     {
-                        var lastIndex = nickAndLink[1].LastIndexOf('/');
+                        var lastIndex = nickAndLink[nickAndLink.Length-1].LastIndexOf('/');
                         if (lastIndex != -1)
                         {
-                            nickAndLink[1] = nickAndLink[1].Substring(lastIndex + 1,
-                                nickAndLink[1].Length - (lastIndex + 1));
+                            nickAndLink[nickAndLink.Length - 1] = nickAndLink[nickAndLink.Length - 1].Substring(lastIndex + 1,
+                                nickAndLink[nickAndLink.Length - 1].Length - (lastIndex + 1));
                         }
                     }
 
@@ -125,8 +142,36 @@ namespace CodewarsDigest_v1._2
         {
             userList.RemoveAll(user => user.PointsForThisWeek == 0);            
             List<UserInfo> sortedList = userList.OrderByDescending(user => user.PointsForThisWeek).ToList();
-            sortedList.ForEach(user => Console.WriteLine(user.Name + " " + user.PointsForThisWeek));
+            //sortedList.ForEach(user => Console.WriteLine(user.Name + " " + user.PointsForThisWeek));
             return sortedList;
+        }
+
+        public static void PrintInHTML(List<UserInfo> activeUserList) // TODO
+        {
+
+        }
+
+        public static void PrintInConsole(List<UserInfo> activeUserList, List<string[]> listOfNicknamesAndVKLinks)
+        {
+            for (int i = 0; i < activeUserList.Count; i++)
+                foreach (var nick in listOfNicknamesAndVKLinks)
+                {
+                    if (nick.Length == 2) // If username consists of 1 word
+                    {
+                        if (nick[0] == activeUserList[i].Name)
+                            activeUserList[i].Name = $"@{nick[1]} ({ activeUserList[i].Name})";
+                    }
+
+                    else if (nick.Length == 3) // If username consists of 2 words
+                    {
+                        if ((nick[0] + " " + nick[1]) == activeUserList[i].Name)
+                            activeUserList[i].Name = $"@{nick[2]} ({ activeUserList[i].Name})";
+                    }
+                }
+
+            for (int i = 0; i < activeUserList.Count; i++)
+                Console.WriteLine($"{i + 1}.  {activeUserList[i].Name}  ({activeUserList[i].PointsForThisWeek})");
+
         }
 
         public static void PrintInConsoleAndHTML(List<UserInfo> userList)
@@ -134,25 +179,10 @@ namespace CodewarsDigest_v1._2
             List<string[]> listOfNicknamesAndVKLinks = ExtractVkLinksFromTXT();
             List<UserInfo> activeUserList = SortActiveUsersOfThisWeek(userList);
 
-            //foreach (var user in activeUserList)
-            for(int i = 0; i < activeUserList.Count; i++)
-                foreach (var nick in listOfNicknamesAndVKLinks)
-                {
-                    if (nick.Length == 2) // If username consists of 1 word
-                    {
-                        if (nick[0] == activeUserList[i].Name)
-                            Console.WriteLine($"{i + 1}.  @{nick[1]}({activeUserList[i].Name})  ({activeUserList[i].PointsForThisWeek})");
-                    }
+            PrintInHTML(activeUserList);
+            PrintInConsole(activeUserList, listOfNicknamesAndVKLinks);
 
-                    if (nick.Length == 3) // If username consists of 2 words
-                    {
-                        if ((nick[0] + " " + nick[1]) == activeUserList[i].Name) // (i+1) + ".   @" + nick[1] + ()
-                            Console.WriteLine($"{i + 1}.  @{nick[1]}({activeUserList[i].Name})  ({activeUserList[i].PointsForThisWeek})");
-                    }
-                }
-
-
-        } // TODO: HTML OUTPUT, users without links printed incorrectly
+        } 
         
 
         static void Main(string[] args)
@@ -175,10 +205,6 @@ namespace CodewarsDigest_v1._2
             GenerateWeekRating(userList);
             PrintInTXT(userList, thisWeekNumber);
             PrintInConsoleAndHTML(userList);
-
-            //foreach (var user in userList)
-            //    Console.WriteLine(user.Name + " " + user.LastWeekPoints 
-            //        + " " + user.CurrentPoints + " : " +user.PointsForThisWeek);
 
             Console.Read();
         }
