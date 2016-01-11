@@ -43,18 +43,27 @@ namespace CodewarsDigest_v1._2
 
         private static void InHTML(List<UserInfo> activeUserList)
         {
-            HtmlDocument page = new HtmlDocument();
-            page.Load(@"Data\HTMLRating\Rating.html");
+            HtmlDocument hDoc = new HtmlDocument();
+            hDoc.Load(@"Data\HTMLRating\Rating.html");
 
-            List<HtmlNode> root = page.DocumentNode.Descendants() // Extracting info of other users
-               .Where(n => (n.Name == "div" && n.Attributes["class"] != null && n.Attributes["class"].Value.Contains("leaderboard pan"))).ToList();
-            foreach (HtmlNode titulo in
-              page.DocumentNode.SelectNodes("//*[@class='lblmkt']"))
-            {
-                titulo.Text = titulo.Text.Replace("test", lbltitulo1.Text);
-            }
+            HtmlTextNode nameNode = null;
+            nameNode = hDoc.DocumentNode
+                .SelectSingleNode("//div[@id='name3']//b//text()") as HtmlTextNode;
+            nameNode.Text = "1111111111";
 
-            page.Save(@"Data\HTMLRating\Rating.html");
+            //for (int id = 0; id < 10; id++)
+            //{
+            //    HtmlTextNode nameNode = null;
+            //    nameNode = hDoc.DocumentNode
+            //        .SelectSingleNode("//div[@id='name" + id + "']//b//text()") as HtmlTextNode;
+            //    nameNode.Text = "1";
+
+            //    HtmlTextNode pointsNode = null;
+            //    pointsNode = hDoc.DocumentNode
+            //        .SelectSingleNode("//div[@id='points{id}']//b//text()") as HtmlTextNode;
+            //    pointsNode.Text = "1";
+            //}
+            hDoc.Save(@"Data\HTMLRating\Rating.html");
         } // TODO
 
         private static void InConsole(List<UserInfo> activeUserList, List<string[]> listOfNicknamesAndVKLinks)
@@ -88,7 +97,7 @@ namespace CodewarsDigest_v1._2
 
             List<UserInfo> activeUserList = SortActiveUsersOfThisWeek(userList);
             
-           // InHTML(activeUserList);
+            InHTML(activeUserList);
             InConsole(activeUserList, listOfNicknamesAndVKLinks);
             
 
