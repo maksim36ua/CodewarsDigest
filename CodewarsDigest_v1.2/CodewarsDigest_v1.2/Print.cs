@@ -49,7 +49,7 @@ namespace CodewarsDigest_v1._2
             HtmlTextNode nameNode = null;
             nameNode = hDoc.DocumentNode
                 .SelectSingleNode("//div[@id=\"name3\"]//b//text()") as HtmlTextNode;
-            nameNode.Text = "1111111111";
+            nameNode.Text = "1";
 
             //for (int id = 0; id < 10; id++)
             //{
