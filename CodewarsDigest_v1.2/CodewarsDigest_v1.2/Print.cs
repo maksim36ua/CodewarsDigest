@@ -43,7 +43,22 @@ namespace CodewarsDigest_v1._2
 
         private static void InHTML(List<UserInfo> activeUserList)
         {
-            
+            HtmlDocument page = new HtmlDocument();
+            page.Load(@"Data\HTMLRating\Rating.html");
+
+            for (int i = 0; i < 10; i++)
+            {
+                HtmlTextNode hName = null;
+                hName = page.DocumentNode
+                    .SelectSingleNode($"//div[@id='name{i}']//text()") as HtmlTextNode;
+                hName.Text = activeUserList[i].Name;
+
+                HtmlTextNode hPoints = null;
+                hPoints = page.DocumentNode
+                    .SelectSingleNode($"//div[@id='points{i}']//text()") as HtmlTextNode;
+                hPoints.Text = activeUserList[i].PointsForThisWeek.ToString();
+            }
+            page.Save(@"Data\HTMLRating\Rating.html");
         } // TODO
 
         private static void InConsole(List<UserInfo> activeUserList, List<string[]> listOfNicknamesAndVKLinks)
