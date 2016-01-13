@@ -1,5 +1,5 @@
-# CodewarsDigest. Final version: 1.2 
-# Main functionality achieved. 
+# CodewarsDigest.  
+# Current version vith complete functionality: 1.2.
 IT KPI codewars.com digest (http://blog.itkpi.pp.ua/codewars-digest-week-1)
 
 Repository with projects for creating digests of IT KPI clan on codewars.com. Examples of digest itself can be found here: https://goo.gl/rDVMd7
