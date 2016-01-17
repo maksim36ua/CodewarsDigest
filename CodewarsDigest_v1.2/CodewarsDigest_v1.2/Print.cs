@@ -46,6 +46,19 @@ namespace CodewarsDigest_v1._2
             HtmlDocument page = new HtmlDocument();
             page.Load(@"Data\HTMLRating\Rating.html");
 
+            for (int i = 0; i < 10; i++) // Clearing HTML nodes 
+            {
+                HtmlTextNode hName = null;
+                hName = page.DocumentNode
+                    .SelectSingleNode($"//div[@id='name{i}']//text()") as HtmlTextNode;
+                hName.Text = "";
+
+                HtmlTextNode hPoints = null;
+                hPoints = page.DocumentNode
+                    .SelectSingleNode($"//div[@id='points{i}']//text()") as HtmlTextNode;
+                hPoints.Text = "";
+            }
+
             for (int i = 0; i < 10; i++)
             {
                 HtmlTextNode hName = null;
@@ -59,7 +72,7 @@ namespace CodewarsDigest_v1._2
                 hPoints.Text = activeUserList[i].PointsForThisWeek.ToString();
             }
             page.Save(@"Data\HTMLRating\Rating.html");
-        } // TODO
+        }
 
         private static void InConsole(List<UserInfo> activeUserList, List<string[]> listOfNicknamesAndVKLinks)
         {
