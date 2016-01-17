@@ -6,12 +6,9 @@ Repository with projects for creating digests of IT KPI clan on codewars.com. Ex
 
 IT KPI (http://itkpi.pp.ua) is the best student IT-community in Ukraine. We've got our clan on codewars.com and decided to make some digests withhin our community members.
 
-v1.3 is under construction. Key features are:
-- each week scores will be stored on IT KPI server
+Key features of v1.2 are:
 - included weekly rating (how much points user scored during last week)
-
-Yet to come:
-- web parser will get user info directly from the server (now it`s not easy to retrieve data because page updates dynamically)
+- output into separate HTML page to present TOP 10 of weekly CodeWars warriors
 
 Here are some old projects, used on the early stages of development. 
 
