@@ -7,12 +7,12 @@ IT KPI (http://itkpi.pp.ua) is the best student IT-community in Ukraine. We've g
 
 Technologies:
 
-ASP.NET MVC
-Entity Framework Core
-.NET/C#
-SQL
-JSON
-Azure Webjobs
+- ASP.NET MVC
+- Entity Framework Core
+- .NET/C#
+- T-SQL
+- JSON
+- Azure Webjobs
 
 
 
