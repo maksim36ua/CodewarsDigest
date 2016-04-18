@@ -1,0 +1,29 @@
+﻿@model UserInfo
+
+<form asp-controller="Admin" asp-action="Edit" method="post" class="form-horizontal" role="form">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="username" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="username" class="form-control" />
+                <span asp-validation-for="username" class="text-danger"></span>
+            </div>
+            <label asp-for="clan" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="clan" class="form-control" />
+                <span asp-validation-for="clan" class="text-danger"></span>
+            </div>
+            <label asp-for="vkLink" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="vkLink" class="form-control" />
+                <span asp-validation-for="vkLink" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Edit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>

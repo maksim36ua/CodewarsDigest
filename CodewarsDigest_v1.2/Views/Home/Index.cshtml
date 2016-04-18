@@ -1,0 +1,73 @@
+﻿@model List<UserInfo>
+
+<div class="container-fluid">
+
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <h1>IT KPI CodeWars rating</h1>
+        <h5>Бета-версія дайджесту нашого клану в Codewars.</h5> 
+        <h5>Багрепорти надсилати <a href="https://vk.com/max_khamrovskyi">йому</a></h5>
+    </div>
+
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height:inherit">
+        <form asp-controller="Home" asp-action="RegButton" method="post" class="form-horizontal" role="form">
+            <div class="col-md-12">
+                <input type="submit" value="Registration" name="Registration" class="btn btn-default" placeholder="Registration" style="min-width: 100px; min-height: 50px; margin: 10px;"/>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:10px;">
+        <table class="table table-striped">
+            <tr>
+                <th>Position</th>
+                <th>Name</th>
+                <th>This week points</th>
+                <th>Previous rating points</th>
+                <th>Total points</th>
+                <th>Clan</th>
+            </tr>
+
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                string color;
+                if (i <= 4)
+                {
+                    color = "success";
+                }
+                else if (i > 4 && i < 10)
+                {
+                    color = "info";
+                }
+                else if (i >= 10 && i < 20)
+                {
+                    color = "warning";
+                }
+                else
+                {
+                    color = "";
+                }
+                <tr class="@color">
+                    <td>
+                        @(i + 1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem[i].username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem[i].thisWeekHonor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem[i].lastWeekHonor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem[i].honor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem[i].clan)
+                    </td>
+
+                </tr>
+            }
+        </table>
+    </div>
+</div>

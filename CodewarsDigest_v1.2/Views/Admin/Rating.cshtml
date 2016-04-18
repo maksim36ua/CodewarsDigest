@@ -1,0 +1,26 @@
+﻿@model AdminClass
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <form asp-controller="AdminController" asp-action="Rating" method="post" class="form-horizontal" role="form">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Password" style="text-align:left" class="col-md-12 control-label">Password</label>
+                <div class="col-md-12">
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <label asp-for="actionToPerform" style="text-align:left" class="col-md-12 control-label">Action</label>
+                <div class="col-md-12">
+                    <input asp-for="actionToPerform" class="form-control" />
+                    <span asp-validation-for="actionToPerform" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="submit" value="Perform" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
